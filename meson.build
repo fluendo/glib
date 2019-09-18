@@ -749,7 +749,7 @@ if host_system != 'windows' and cc.has_function('posix_memalign', prefix: '#incl
 endif
 
 # Check that posix_spawn() is usable; must use header
-if cc.has_function('posix_spawn', prefix : '#include <spawn.h>')
+if host_system != 'emscripten' and cc.has_function('posix_spawn', prefix : '#include <spawn.h>')
   glib_conf.set('HAVE_POSIX_SPAWN', 1)
 endif
 
