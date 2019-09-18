@@ -1891,8 +1891,8 @@ atomicdefine = '''
 # We know that we can always use real ("lock free") atomic operations with MSVC
 if cc.get_id() == 'msvc' or cc.get_id() == 'clang-cl' or cc.links(atomictest, name : 'atomic ops')
   have_atomic_lock_free = true
-  if cc.get_id() == 'gcc' and not cc.compiles(atomicdefine, name : 'atomic ops define')
-    # Old gcc release may provide
+  if (cc.get_id() == 'gcc' or host_system == 'emscripten') and not cc.compiles(atomicdefine, name : 'atomic ops define')
+    # Some old releases of GCC or Emscripten provides
     # __sync_bool_compare_and_swap but doesn't define
     # __GCC_HAVE_SYNC_COMPARE_AND_SWAP_4
     glib_conf.set('__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4', true)
