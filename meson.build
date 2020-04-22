@@ -492,7 +492,7 @@ foreach m : struct_members
 endforeach
 
 # Compiler flags
-if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
+if cc.get_id() == 'gcc' or cc.get_id() == 'clang' or cc.get_id() == 'emscripten'
   warning_common_args = [
     '-Wduplicated-branches',
     '-Wimplicit-fallthrough',
@@ -1597,10 +1597,10 @@ g_sizet_compatibility = {
   'long long': sizet_size == long_long_size,
 }
 
-# Do separate checks for gcc/clang (and ignore other compilers for now), since
-# we need to explicitly pass -Werror to the compilers.
+# Do separate checks for gcc/clang/emscripten (and ignore other compilers for now),
+# since we need to explicitly pass -Werror to the compilers.
 # FIXME: https://github.com/mesonbuild/meson/issues/5399
-if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
+if cc.get_id() == 'gcc' or cc.get_id() == 'clang' or cc.get_id() == 'emscripten'
   foreach type_name, size_compatibility : g_sizet_compatibility
     g_sizet_compatibility += { type_name: size_compatibility and
       cc.compiles(
