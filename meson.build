@@ -296,6 +296,9 @@ if host_system == 'windows'
 elif host_system == 'cygwin'
   glib_os = '''#define G_OS_UNIX
 #define G_WITH_CYGWIN'''
+elif host_system == 'emscripten'
+  glib_os = '''#define G_OS_UNIX
+#define G_PLATFORM_WASM'''
 else
   glib_os = '#define G_OS_UNIX'
 endif
@@ -1685,6 +1688,8 @@ glibconfig_conf.set('gssizebits', ssizet_size * 8)
 # XXX: https://gitlab.gnome.org/GNOME/glib/issues/1413
 if host_system == 'windows'
   g_module_suffix = 'dll'
+elif host_system == 'emscripten'
+  g_module_suffix = 'wasm'
 else
   g_module_suffix = 'so'
 endif

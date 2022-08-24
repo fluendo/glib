@@ -1523,7 +1523,7 @@ get_windows_version (gboolean with_windows)
 }
 #endif
 
-#if defined (G_OS_UNIX) && !defined (__APPLE__)
+#if defined (G_OS_UNIX) && !defined (__APPLE__) && !defined (G_PLATFORM_WASM)
 static gchar *
 get_os_info_from_os_release (const gchar *key_name,
                              const gchar *buffer)
@@ -1678,6 +1678,11 @@ g_get_os_info (const gchar *key_name)
 #if defined (__APPLE__)
   if (g_strcmp0 (key_name, G_OS_INFO_KEY_NAME) == 0)
     return g_strdup ("macOS");
+  else
+    return NULL;
+#elif defined (G_PLATFORM_WASM)
+  if (g_strcmp0 (key_name, G_OS_INFO_KEY_NAME) == 0)
+    return g_strdup ("wasm");
   else
     return NULL;
 #elif defined (G_OS_UNIX)

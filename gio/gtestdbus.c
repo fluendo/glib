@@ -48,7 +48,7 @@
 
 #include "glibintl.h"
 
-#ifdef G_OS_UNIX
+#if defined(G_OS_UNIX) && !defined(G_PLATFORM_WASM)
 #include "glib-unix.h"
 #include "glib-unixprivate.h"
 #endif
@@ -152,7 +152,7 @@ _g_test_watcher_remove_pid (GPid pid)
      will be killed anyway */
 }
 
-#else
+#elif defined(G_OS_UNIX) && !defined(G_PLATFORM_WASM)
 
 #define ADD_PID_FORMAT "add pid %d\n"
 #define REMOVE_PID_FORMAT "remove pid %d\n"
@@ -329,6 +329,20 @@ _g_test_watcher_remove_pid (GPid pid)
   command = g_strdup_printf (REMOVE_PID_FORMAT, (guint) pid);
   watcher_send_command (command);
   g_free (command);
+}
+
+#else
+
+static void
+_g_test_watcher_add_pid (GPid pid)
+{
+  /* no-op */
+}
+
+static void
+_g_test_watcher_remove_pid (GPid pid)
+{
+  /* no-op */
 }
 
 #endif
@@ -604,7 +618,7 @@ static gboolean
 make_pipe (gint     pipe_fds[2],
            GError **error)
 {
-#if defined(G_OS_UNIX)
+#if defined(G_OS_UNIX) && !defined(G_PLATFORM_WASM)
   return g_unix_open_pipe (pipe_fds, FD_CLOEXEC, error);
 #elif defined(G_OS_WIN32)
   if (_pipe (pipe_fds, 4096, _O_BINARY) < 0)

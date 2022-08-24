@@ -297,7 +297,9 @@ g_application_command_line_real_printerr_literal (GApplicationCommandLine *cmdli
 static GInputStream *
 g_application_command_line_real_get_stdin (GApplicationCommandLine *cmdline)
 {
-#ifdef G_OS_UNIX
+#ifdef G_PLATFORM_WASM
+  return NULL;
+#elif defined(G_OS_UNIX)
   return g_unix_input_stream_new (0, FALSE);
 #else
   return g_win32_input_stream_new (GetStdHandle (STD_INPUT_HANDLE), FALSE);

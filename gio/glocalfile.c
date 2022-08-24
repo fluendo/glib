@@ -27,7 +27,7 @@
 #include <string.h>
 #include <errno.h>
 #include <fcntl.h>
-#if G_OS_UNIX
+#ifdef G_OS_UNIX
 #include <dirent.h>
 #include <unistd.h>
 #endif
@@ -69,7 +69,7 @@
 #include <glib/gstdio.h>
 #include <glib/gstdioprivate.h>
 #include "glibintl.h"
-#ifdef G_OS_UNIX
+#if defined(G_OS_UNIX) && !defined(G_PLATFORM_WASM)
 #include "glib-unix.h"
 #include "gportalsupport.h"
 #include "gtrashportal.h"
@@ -1929,7 +1929,7 @@ _g_local_file_has_trash_dir (const char *dirname, dev_t dir_dev)
   return res;
 }
 
-#ifndef G_OS_WIN32
+#if !defined(G_OS_WIN32) && !defined(G_PLATFORM_WASM)
 gboolean
 _g_local_file_is_lost_found_dir (const char *path, dev_t path_dev)
 {
@@ -1993,8 +1993,10 @@ g_local_file_trash (GFile         *file,
   GVfs *vfs;
   int errsv;
 
+#ifndef G_PLATFORM_WASM
   if (glib_should_use_portal ())
     return g_trash_portal_trash_file (file, error);
+#endif
 
   if (g_lstat (local->filename, &file_stat) != 0)
     {

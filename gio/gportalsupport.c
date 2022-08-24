@@ -29,6 +29,7 @@ static gboolean use_portal;
 static gboolean network_available;
 static gboolean dconf_access;
 
+#ifndef G_PLATFORM_WASM
 #ifdef G_PORTAL_SUPPORT_TEST
 static const char *snapctl = "snapctl";
 #else
@@ -136,21 +137,29 @@ sandbox_info_read (void)
 
   g_once_init_leave (&sandbox_info_is_read, 1);
 }
+#endif
 
 gboolean
 glib_should_use_portal (void)
 {
+#ifdef G_PLATFORM_WASM
+  return FALSE;
+#else
   sandbox_info_read ();
 
   if (sandbox_type == G_SANDBOX_TYPE_SNAP)
     return snap_plug_is_connected ("desktop");
 
   return use_portal;
+#endif
 }
 
 gboolean
 glib_network_available_in_sandbox (void)
 {
+#ifdef G_PLATFORM_WASM
+  return FALSE;
+#else
   sandbox_info_read ();
 
   if (sandbox_type == G_SANDBOX_TYPE_SNAP)
@@ -164,15 +173,20 @@ glib_network_available_in_sandbox (void)
     }
 
   return network_available;
+#endif
 }
 
 gboolean
 glib_has_dconf_access_in_sandbox (void)
 {
+#ifdef G_PLATFORM_WASM
+  return FALSE;
+#else
   sandbox_info_read ();
 
   if (sandbox_type == G_SANDBOX_TYPE_SNAP)
     return snap_plug_is_connected ("gsettings");
 
   return dconf_access;
+#endif
 }

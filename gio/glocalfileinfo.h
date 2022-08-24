@@ -344,7 +344,7 @@ inline static guint32   _g_stat_mtim_nsec (const GLocalFileStat *buf) { return 0
 
 gboolean   _g_local_file_has_trash_dir        (const char             *dirname,
                                                dev_t                   dir_dev);
-#ifdef G_OS_UNIX
+#if defined(G_OS_UNIX) && !defined(G_PLATFORM_WASM)
 gboolean   _g_local_file_is_lost_found_dir    (const char             *path,
                                                dev_t                   path_dev);
 #endif

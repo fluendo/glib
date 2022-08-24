@@ -58,7 +58,7 @@
 
 #include "gfile.h"
 #include "glib/gstdio.h"
-#ifdef G_OS_UNIX
+#if defined(G_OS_UNIX) && !defined(G_PLATFORM_WASM)
 #include "glib-unix.h"
 #endif
 #include "gvfs.h"

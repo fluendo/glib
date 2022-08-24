@@ -48,7 +48,7 @@
 #define G_MAIN_POLL_DEBUG
 #endif
 
-#ifdef G_OS_UNIX
+#if defined(G_OS_UNIX) && !defined(G_PLATFORM_WASM)
 #include "glib-unix.h"
 #include <pthread.h>
 #ifdef HAVE_EVENTFD
@@ -379,7 +379,7 @@ struct _GChildWatchSource
   gint        child_status;
   /* @poll is always used on Windows, and used on Unix iff @using_pidfd is set: */
   GPollFD     poll;
-#ifndef G_OS_WIN32
+#if !defined(G_OS_WIN32) && !defined(G_PLATFORM_WASM)
   gboolean    child_exited; /* (atomic); not used iff @using_pidfd is set */
   gboolean    using_pidfd;
 #endif /* G_OS_WIN32 */
@@ -474,7 +474,7 @@ static gboolean g_child_watch_dispatch (GSource     *source,
 					GSourceFunc  callback,
 					gpointer     user_data);
 static void     g_child_watch_finalize (GSource     *source);
-#ifdef G_OS_UNIX
+#if defined(G_OS_UNIX) && !defined(G_PLATFORM_WASM)
 static void g_unix_signal_handler (int signum);
 static gboolean g_unix_signal_watch_prepare  (GSource     *source,
 					      gint        *timeout);
@@ -495,7 +495,7 @@ static void block_source (GSource *source);
 
 static GMainContext *glib_worker_context;
 
-#ifndef G_OS_WIN32
+#if !defined(G_OS_WIN32) && !defined(G_PLATFORM_WASM)
 
 
 /* UNIX signals work by marking one of these variables then waking the
@@ -536,7 +536,7 @@ GSourceFuncs g_unix_signal_funcs =
   g_unix_signal_watch_finalize,
   NULL, NULL
 };
-#endif /* !G_OS_WIN32 */
+#endif /* !G_OS_WIN32 && !G_PLATFORM_WASM */
 G_LOCK_DEFINE_STATIC (main_context_list);
 static GSList *main_context_list = NULL;
 
@@ -2711,7 +2711,7 @@ g_clear_handle_id (guint            *tag_ptr,
     }
 }
 
-#ifdef G_OS_UNIX
+#if defined(G_OS_UNIX) && !defined(G_PLATFORM_WASM)
 /**
  * g_source_add_unix_fd:
  * @source: a #GSource
@@ -2893,7 +2893,7 @@ g_source_query_unix_fd (GSource  *source,
 
   return poll_fd->revents;
 }
-#endif /* G_OS_UNIX */
+#endif /* G_OS_UNIX && !G_PLATFORM_WASM */
 
 /**
  * g_get_current_time:
@@ -5453,7 +5453,28 @@ g_child_watch_finalize (GSource *source)
 {
 }
 
-#else /* G_OS_WIN32 */
+#elif defined(G_PLATFORM_WASM) /* G_OS_WIN32 */
+
+static gboolean
+g_child_watch_prepare (GSource *source,
+                       gint    *timeout)
+{
+  *timeout = -1;
+  return FALSE;
+}
+
+static gboolean 
+g_child_watch_check (GSource  *source)
+{
+  return FALSE;
+}
+
+static void
+g_child_watch_finalize (GSource *source)
+{
+}
+
+#else /* G_PLATFORM_WASM */
 
 static void
 wake_source (GSource *source)
@@ -5880,7 +5901,7 @@ g_child_watch_dispatch (GSource    *source,
   return FALSE;
 }
 
-#ifndef G_OS_WIN32
+#if !defined(G_OS_WIN32) && !defined(G_PLATFORM_WASM)
 
 static void
 g_unix_signal_handler (int signum)
@@ -5901,7 +5922,7 @@ g_unix_signal_handler (int signum)
   errno = saved_errno;
 }
 
-#endif /* !G_OS_WIN32 */
+#endif /* !G_OS_WIN32 && !G_PLATFORM_WASM */
 
 /**
  * g_child_watch_source_new:
@@ -5971,7 +5992,7 @@ g_child_watch_source_new (GPid pid)
   child_watch_source->poll.events = G_IO_IN;
 
   g_source_add_poll (source, &child_watch_source->poll);
-#else /* !G_OS_WIN32 */
+#elif !defined(G_PLATFORM_WASM) /* !G_OS_WIN32 */
 
 #ifdef HAVE_PIDFD
   /* Use a pidfd, if possible, to avoid having to install a global SIGCHLD
@@ -6454,7 +6475,7 @@ glib_worker_main (gpointer data)
     {
       g_main_context_iteration (glib_worker_context, TRUE);
 
-#ifdef G_OS_UNIX
+#if defined(G_OS_UNIX) && !defined(G_PLATFORM_WASM)
       if (g_atomic_int_get (&any_unix_signal_pending))
         dispatch_unix_signals ();
 #endif
@@ -6471,7 +6492,7 @@ g_get_worker_context (void)
   if (g_once_init_enter (&initialised))
     {
       /* mask all signals in the worker thread */
-#ifdef G_OS_UNIX
+#if defined(G_OS_UNIX) && !defined(G_PLATFORM_WASM)
       sigset_t prev_mask;
       sigset_t all;
 
@@ -6480,7 +6501,7 @@ g_get_worker_context (void)
 #endif
       glib_worker_context = g_main_context_new ();
       g_thread_new ("gmain", glib_worker_main, NULL);
-#ifdef G_OS_UNIX
+#if defined(G_OS_UNIX) && !defined(G_PLATFORM_WASM)
       pthread_sigmask (SIG_SETMASK, &prev_mask, NULL);
 #endif
       g_once_init_leave (&initialised, TRUE);

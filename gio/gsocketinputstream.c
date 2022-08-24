@@ -42,13 +42,13 @@ struct _GSocketInputStreamPrivate
 };
 
 static void g_socket_input_stream_pollable_iface_init (GPollableInputStreamInterface *iface);
-#ifdef G_OS_UNIX
+#if defined(G_OS_UNIX) && !defined(G_PLATFORM_WASM)
 static void g_socket_input_stream_file_descriptor_based_iface_init (GFileDescriptorBasedIface *iface);
 #endif
 
 #define g_socket_input_stream_get_type _g_socket_input_stream_get_type
 
-#ifdef G_OS_UNIX
+#if defined(G_OS_UNIX) && !defined(G_PLATFORM_WASM)
 G_DEFINE_TYPE_WITH_CODE (GSocketInputStream, g_socket_input_stream, G_TYPE_INPUT_STREAM,
                          G_ADD_PRIVATE (GSocketInputStream)
 			 G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_INPUT_STREAM, g_socket_input_stream_pollable_iface_init)
@@ -168,7 +168,7 @@ g_socket_input_stream_pollable_read_nonblocking (GPollableInputStream  *pollable
 					 NULL, error);
 }
 
-#ifdef G_OS_UNIX
+#if defined(G_OS_UNIX) && !defined(G_PLATFORM_WASM)
 static int
 g_socket_input_stream_get_fd (GFileDescriptorBased *fd_based)
 {
@@ -198,7 +198,7 @@ g_socket_input_stream_class_init (GSocketInputStreamClass *klass)
 							G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 }
 
-#ifdef G_OS_UNIX
+#if defined(G_OS_UNIX) && !defined(G_PLATFORM_WASM)
 static void
 g_socket_input_stream_file_descriptor_based_iface_init (GFileDescriptorBasedIface *iface)
 {
