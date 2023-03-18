@@ -89,6 +89,15 @@ typedef gsize GType;
 #define G_TYPE_HASH_TABLE (g_hash_table_get_type ())
 
 /**
+ * G_TYPE_REGEX:
+ *
+ * The #GType for a boxed type holding a #GRegex reference.
+ *
+ * Since: 2.14
+ */
+#define G_TYPE_REGEX (g_regex_get_type ())
+
+/**
  * G_TYPE_MATCH_INFO:
  *
  * The #GType for a boxed type holding a #GMatchInfo reference.

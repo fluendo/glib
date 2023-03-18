@@ -216,6 +216,7 @@ glib_sub_headers = files(
   'grcbox.h',
   'grefcount.h',
   'grefstring.h',
+  'gregex.h',
   'gscanner.h',
   'gsequence.h',
   'gshell.h',
@@ -304,6 +305,7 @@ glib_sources += files(
   'grcbox.c',
   'grefcount.c',
   'grefstring.c',
+  'gregex.c',
   'gscanner.c',
   'gsequence.c',
   'gshell.c',
@@ -393,7 +395,13 @@ else
   glib_dtrace_hdr = []
 endif
 
-glib_c_args = ['-DG_LOG_DOMAIN="GLib"'] + glib_c_args_internal
+pcre2_static_args = []
+
+if use_pcre2_static_flag
+  pcre2_static_args = ['-DPCRE2_STATIC']
+endif
+
+glib_c_args = ['-DG_LOG_DOMAIN="GLib"'] + glib_c_args_internal + pcre2_static_args
 libglib = library('glib-2.0',
   glib_dtrace_obj, glib_dtrace_hdr,
   sources : [deprecated_sources, glib_sources],
@@ -412,6 +420,7 @@ libglib = library('glib-2.0',
     libm,
     librt,
     libsysprof_capture_dep,
+    pcre2,
     platform_deps,
     thread_dep,
   ],

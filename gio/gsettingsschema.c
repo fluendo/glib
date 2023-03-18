@@ -553,7 +553,62 @@ start_element (GMarkupParseContext  *context,
 static gchar *
 normalise_whitespace (const gchar *orig)
 {
-  return orig;
+  /* We normalise by the same rules as in intltool:
+   *
+   *   sub cleanup {
+   *       s/^\s+//;
+   *       s/\s+$//;
+   *       s/\s+/ /g;
+   *       return $_;
+   *   }
+   *
+   *   $message = join "\n\n", map &cleanup, split/\n\s*\n+/, $message;
+   *
+   * Where \s is an ascii space character.
+   *
+   * We aim for ease of implementation over efficiency -- this code is
+   * not run in normal applications.
+   */
+  static GRegex *cleanup[3];
+  static GRegex *splitter;
+  gchar **lines;
+  gchar *result;
+  gint i;
+
+  if (g_once_init_enter (&splitter))
+    {
+      GRegex *s;
+
+      cleanup[0] = g_regex_new ("^\\s+", G_REGEX_DEFAULT,
+                                G_REGEX_MATCH_DEFAULT, NULL);
+      cleanup[1] = g_regex_new ("\\s+$", G_REGEX_DEFAULT,
+                                G_REGEX_MATCH_DEFAULT, NULL);
+      cleanup[2] = g_regex_new ("\\s+", G_REGEX_DEFAULT,
+                                G_REGEX_MATCH_DEFAULT, NULL);
+      s = g_regex_new ("\\n\\s*\\n+", G_REGEX_DEFAULT,
+                       G_REGEX_MATCH_DEFAULT, NULL);
+
+      g_once_init_leave (&splitter, s);
+    }
+
+  lines = g_regex_split (splitter, orig, 0);
+  for (i = 0; lines[i]; i++)
+    {
+      gchar *a, *b, *c;
+
+      a = g_regex_replace_literal (cleanup[0], lines[i], -1, 0, "", 0, 0);
+      b = g_regex_replace_literal (cleanup[1], a, -1, 0, "", 0, 0);
+      c = g_regex_replace_literal (cleanup[2], b, -1, 0, " ", 0, 0);
+      g_free (lines[i]);
+      g_free (a);
+      g_free (b);
+      lines[i] = c;
+    }
+
+  result = g_strjoinv ("\n\n", lines);
+  g_strfreev (lines);
+
+  return result;
 }
 
 static void
