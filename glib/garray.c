@@ -970,8 +970,8 @@ g_array_sort (GArray       *farray,
     g_qsort_with_data (array->data,
                        array->len,
                        array->elt_size,
-                       (GCompareDataFunc)compare_func,
-                       NULL);
+                       g_compare_func_to_compare_data_func,
+                       compare_func);
 }
 
 /**
