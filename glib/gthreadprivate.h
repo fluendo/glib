@@ -95,6 +95,9 @@ void            g_system_thread_wait            (GRealThread  *thread);
 GRealThread *g_system_thread_new (GThreadFunc proxy,
                                   gulong stack_size,
                                   const char *name,
+#ifdef G_WITH_EMSCRIPTEN
+                                  const char *canvas,
+#endif
                                   GThreadFunc func,
                                   gpointer data,
                                   GError **error);
@@ -105,6 +108,9 @@ void            g_system_thread_set_name        (const gchar  *name);
 
 /* gthread.c */
 GThread *g_thread_new_internal (const gchar *name,
+#ifdef G_WITH_EMSCRIPTEN
+                                const gchar *canvas,
+#endif
                                 GThreadFunc proxy,
                                 GThreadFunc func,
                                 gpointer data,
