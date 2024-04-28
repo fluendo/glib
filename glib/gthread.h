@@ -160,7 +160,12 @@ GLIB_AVAILABLE_IN_ALL
 gpointer        g_thread_join                   (GThread        *thread);
 GLIB_AVAILABLE_IN_ALL
 void            g_thread_yield                  (void);
-
+#ifdef G_WITH_EMSCRIPTEN
+GThread *       g_thread_emscripten_new         (const gchar *name,
+                                                 const gchar *canvas,
+                                                 GThreadFunc  func,
+                                                 gpointer     data);
+#endif
 
 GLIB_AVAILABLE_IN_2_32
 void            g_mutex_init                    (GMutex         *mutex);
