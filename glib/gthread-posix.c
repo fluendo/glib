@@ -70,6 +70,10 @@
 #include <windows.h>
 #endif
 
+#ifdef G_WITH_EMSCRIPTEN
+#include <emscripten/threading.h>
+#endif
+
 #if defined(HAVE_SYS_SCHED_GETATTR)
 #include <sys/syscall.h>
 #endif
@@ -1176,6 +1180,9 @@ GRealThread *
 g_system_thread_new (GThreadFunc proxy,
                      gulong stack_size,
                      const char *name,
+#ifdef G_WITH_EMSCRIPTEN
+                     const char *canvas,
+#endif
                      GThreadFunc func,
                      gpointer data,
                      GError **error)
@@ -1196,6 +1203,14 @@ g_system_thread_new (GThreadFunc proxy,
   thread->proxy = proxy;
 
   posix_check_cmd (pthread_attr_init (&attr));
+
+#ifdef G_WITH_EMSCRIPTEN
+  if (canvas)
+    {
+      g_print("Setting canvas %s\n", canvas);
+      emscripten_pthread_attr_settransferredcanvases(&attr, canvas);
+    }
+#endif
 
 #ifdef HAVE_PTHREAD_ATTR_SETSTACKSIZE
   if (stack_size)

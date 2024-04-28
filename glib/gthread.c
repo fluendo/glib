@@ -889,7 +889,11 @@ g_thread_new (const gchar *name,
   GError *error = NULL;
   GThread *thread;
 
+#ifdef G_WITH_EMSCRIPTEN
+  thread = g_thread_new_internal (name, NULL, g_thread_proxy, func, data, 0, &error);
+#else
   thread = g_thread_new_internal (name, g_thread_proxy, func, data, 0, &error);
+#endif
 
   if G_UNLIKELY (thread == NULL)
     g_error ("creating thread '%s': %s", name ? name : "", error->message);
@@ -920,11 +924,18 @@ g_thread_try_new (const gchar  *name,
                   gpointer      data,
                   GError      **error)
 {
+#ifdef G_WITH_EMSCRIPTEN
+  return g_thread_new_internal (name, NULL, g_thread_proxy, func, data, 0, error);
+#else
   return g_thread_new_internal (name, g_thread_proxy, func, data, 0, error);
+#endif
 }
 
 GThread *
 g_thread_new_internal (const gchar *name,
+#ifdef G_WITH_EMSCRIPTEN
+                       const gchar *canvas,
+#endif
                        GThreadFunc proxy,
                        GThreadFunc func,
                        gpointer data,
@@ -936,7 +947,11 @@ g_thread_new_internal (const gchar *name,
   g_atomic_int_inc (&g_thread_n_created_counter);
 
   g_trace_mark (G_TRACE_CURRENT_TIME, 0, "GLib", "GThread created", "%s", name ? name : "(unnamed)");
+#ifdef G_WITH_EMSCRIPTEN
+  return (GThread *) g_system_thread_new (proxy, stack_size, name, canvas, func, data, error);
+#else
   return (GThread *) g_system_thread_new (proxy, stack_size, name, func, data, error);
+#endif
 }
 
 /**
@@ -1116,6 +1131,34 @@ g_get_num_processors (void)
 
   return 1; /* Fallback */
 }
+
+#ifdef G_WITH_EMSCRIPTEN
+/**
+ * g_thread_emsrcipten_new:
+ * @name: (nullable): an (optional) name for the new thread
+ * @canvas: (nullable): an (optional) name of the canvas id to use for trasnferring ownership
+ * @func: (closure data) (scope async): a function to execute in the new thread
+ * @data: (nullable): an argument to supply to the new thread
+ *
+ * Returns: (transfer full): the new #GThread
+ */
+GThread *
+g_thread_emscripten_new (const gchar *name,
+                         const gchar *canvas,
+                         GThreadFunc  func,
+                         gpointer     data)
+{
+  GError *error = NULL;
+  GThread *thread;
+
+  thread = g_thread_new_internal (name, canvas, g_thread_proxy, func, data, 0, &error);
+
+  if G_UNLIKELY (thread == NULL)
+    g_error ("creating thread '%s' for canvas '%s': %s", name ? name : "", canvas ? canvas : "", error->message);
+
+  return thread;
+}
+#endif
 
 /* Epilogue {{{1 */
 /* vim: set foldmethod=marker: */
