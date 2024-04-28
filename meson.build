@@ -298,7 +298,8 @@ elif host_system == 'cygwin'
 #define G_WITH_CYGWIN'''
 elif host_system == 'emscripten'
   glib_os = '''#define G_OS_UNIX
-#define G_PLATFORM_WASM'''
+#define G_PLATFORM_WASM
+#define G_WITH_EMSCRIPTEN'''
 else
   glib_os = '#define G_OS_UNIX'
 endif
