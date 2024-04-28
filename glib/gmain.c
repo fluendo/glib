@@ -48,6 +48,10 @@
 #define G_MAIN_POLL_DEBUG
 #endif
 
+#if defined(G_WITH_EMSCRIPTEN)
+#include "emscripten.h"
+#endif
+
 #if defined(G_OS_UNIX) && !defined(G_PLATFORM_WASM)
 #include "glib-unix.h"
 #include <pthread.h>
@@ -768,8 +772,10 @@ g_main_context_new_with_flags (GMainContextFlags flags)
   context->time_is_fresh = FALSE;
   
   context->wakeup = g_wakeup_new ();
+#ifndef G_WITH_EMSCRIPTEN
   g_wakeup_get_pollfd (context->wakeup, &context->wake_up_rec);
   g_main_context_add_poll_unlocked (context, 0, &context->wake_up_rec);
+#endif
 
   G_LOCK (main_context_list);
   main_context_list = g_slist_append (main_context_list, context);
@@ -4418,6 +4424,28 @@ g_main_loop_unref (GMainLoop *loop)
   g_free (loop);
 }
 
+#ifdef G_WITH_EMSCRIPTEN
+static void
+g_main_context_emscripten_iterate (gpointer arg)
+{
+  GMainLoop *loop = (GMainLoop *)arg;
+  gboolean is_running;
+  static int runs = 0;
+
+  g_main_context_iterate (loop->context, TRUE, TRUE, G_THREAD_SELF);
+  is_running = g_atomic_int_get (&loop->is_running);
+  if (!is_running) {
+    emscripten_cancel_main_loop();
+
+    UNLOCK_CONTEXT (loop->context);
+  
+    g_main_context_release (loop->context);
+  
+    g_main_loop_unref (loop);
+  }
+}
+#endif
+
 /**
  * g_main_loop_run:
  * @loop: a #GMainLoop
@@ -4475,6 +4503,9 @@ g_main_loop_run (GMainLoop *loop)
     }
 
   g_atomic_int_set (&loop->is_running, TRUE);
+#ifdef G_WITH_EMSCRIPTEN
+  emscripten_set_main_loop_arg (g_main_context_emscripten_iterate, loop, 0, 1);
+#else
   while (g_atomic_int_get (&loop->is_running))
     g_main_context_iterate (loop->context, TRUE, TRUE, self);
 
@@ -4483,6 +4514,7 @@ g_main_loop_run (GMainLoop *loop)
   g_main_context_release (loop->context);
   
   g_main_loop_unref (loop);
+#endif
 }
 
 /**
