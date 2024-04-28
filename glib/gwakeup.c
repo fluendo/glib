@@ -147,7 +147,6 @@ GWakeup *
 g_wakeup_new (void)
 {
 #ifdef G_PLATFORM_WASM
-  g_error ("g_wakeup_new is no-op on WebAssembly");
   return NULL;
 #else
   GError *error = NULL;
@@ -261,9 +260,7 @@ g_wakeup_acknowledge (GWakeup *wakeup)
 void
 g_wakeup_signal (GWakeup *wakeup)
 {
-#ifdef G_PLATFORM_WASM
-  g_error ("g_wakeup_signal is no-op on WebAssembly");
-#else
+#ifndef G_PLATFORM_WASM
   int res;
 
   if (wakeup->fds[1] == -1)
