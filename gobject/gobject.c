@@ -3284,8 +3284,9 @@ weak_refs_notify (gpointer data)
   WeakRefStack *wstack = data;
   guint i;
 
-  for (i = 0; i < wstack->n_weak_refs; i++)
-    wstack->weak_refs[i].notify (wstack->weak_refs[i].data, wstack->object);
+  //TODO
+  /* for (i = 0; i < wstack->n_weak_refs; i++) */
+  /*   wstack->weak_refs[i].notify (wstack->weak_refs[i].data, wstack->object); */
   g_free (wstack);
 }
 
