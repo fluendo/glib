@@ -210,6 +210,16 @@ g_async_queue_unref_and_unlock (GAsyncQueue *queue)
   g_async_queue_unref (queue);
 }
 
+static void
+g_async_queue_free_nofify (gpointer data, gpointer user_data)
+{
+  GAsyncQueue *queue = (GAsyncQueue *)user_data;
+
+  g_return_if_fail (queue != NULL);
+  
+  queue->item_free_func (data);
+}
+
 /**
  * g_async_queue_unref:
  * @queue: a #GAsyncQueue.
@@ -232,7 +242,7 @@ g_async_queue_unref (GAsyncQueue *queue)
       g_mutex_clear (&queue->mutex);
       g_cond_clear (&queue->cond);
       if (queue->item_free_func)
-        g_queue_foreach (&queue->queue, (GFunc) queue->item_free_func, NULL);
+        g_queue_foreach (&queue->queue, g_async_queue_free_nofify, queue);
       g_queue_clear (&queue->queue);
       g_free (queue);
     }
