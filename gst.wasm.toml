@@ -8,7 +8,7 @@ url = "https://github.com/kleisauke/glib.git"
 
 [target]
 remote = "origin"
-branch = "final-rgonzalaez"
+branch = "gst.wasm"
 
 [source]
 remote = "kleisauke"
@@ -39,8 +39,12 @@ remote = "origin"
 name = "wasm-2.76.0-canvas-in-thread"
 status = "pending"
 
-
 [[features]]
 remote = "origin"
 name = "wasm-2.76.0-main-loop-support"
+status = "pending"
+
+[[features]]
+remote = "origin"
+name = "wasm-2.76.0-garray-fixes"
 status = "pending"
