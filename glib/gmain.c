@@ -4432,13 +4432,13 @@ g_main_context_emscripten_iterate (gpointer arg)
   gboolean is_running;
   static int runs = 0;
 
+  LOCK_CONTEXT (loop->context);
   g_main_context_iterate (loop->context, TRUE, TRUE, G_THREAD_SELF);
+  UNLOCK_CONTEXT (loop->context);
+
   is_running = g_atomic_int_get (&loop->is_running);
   if (!is_running) {
     emscripten_cancel_main_loop();
-
-    UNLOCK_CONTEXT (loop->context);
-  
     g_main_context_release (loop->context);
   
     g_main_loop_unref (loop);
@@ -4504,6 +4504,7 @@ g_main_loop_run (GMainLoop *loop)
 
   g_atomic_int_set (&loop->is_running, TRUE);
 #ifdef G_WITH_EMSCRIPTEN
+  UNLOCK_CONTEXT (loop->context);
   emscripten_set_main_loop_arg (g_main_context_emscripten_iterate, loop, 0, 1);
 #else
   while (g_atomic_int_get (&loop->is_running))
