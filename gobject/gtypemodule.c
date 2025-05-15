@@ -131,7 +131,8 @@ g_type_module_class_init (GTypeModuleClass *class)
 }
 
 static void
-g_type_module_iface_init (GTypePluginClass *iface)
+g_type_module_iface_init (GTypePluginClass *iface,
+                          gpointer          iface_data)
 {
   iface->use_plugin = g_type_module_use_plugin;
   iface->unuse_plugin = (void (*) (GTypePlugin *))g_type_module_unuse;
