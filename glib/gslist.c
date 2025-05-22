@@ -1068,7 +1068,7 @@ GSList *
 g_slist_sort (GSList       *list,
               GCompareFunc  compare_func)
 {
-  return g_slist_sort_real (list, (GFunc) compare_func, NULL);
+  return g_slist_sort_real (list, (GFunc) g_compare_func_to_compare_data_func, compare_func);
 }
 
 /**
