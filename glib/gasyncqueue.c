@@ -182,7 +182,7 @@ g_async_queue_unref (GAsyncQueue *queue)
       g_mutex_clear (&queue->mutex);
       g_cond_clear (&queue->cond);
       if (queue->item_free_func)
-        g_queue_foreach (&queue->queue, (GFunc) queue->item_free_func, NULL);
+        g_queue_foreach (&queue->queue, g_destroy_notify_to_func, queue->item_free_func);
       g_queue_clear (&queue->queue);
       g_free (queue);
     }

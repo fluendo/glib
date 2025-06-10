@@ -348,6 +348,7 @@ glib_sources += files(
   'gversion.c',
   'gwakeup.c',
   'gprintf.c',
+  'gtypes.c'
 )
 
 platform_deps = []

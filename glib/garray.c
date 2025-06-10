@@ -928,8 +928,8 @@ g_array_sort (GArray       *farray,
     g_sort_array (array->data,
                   array->len,
                   array->elt_size,
-                  (GCompareDataFunc) compare_func,
-                  NULL);
+                  g_compare_func_to_compare_data_func,
+                  compare_func);
 }
 
 /**
@@ -2417,8 +2417,8 @@ g_ptr_array_sort (GPtrArray    *array,
     g_sort_array (array->pdata,
                   array->len,
                   sizeof (gpointer),
-                  (GCompareDataFunc) compare_func,
-                  NULL);
+                  g_compare_func_to_compare_data_func,
+                  compare_func);
 }
 
 /* Please keep this doc-comment in sync with

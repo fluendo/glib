@@ -146,7 +146,7 @@ void
 g_slist_free_full (GSList         *list,
 		   GDestroyNotify  free_func)
 {
-  g_slist_foreach (list, (GFunc) free_func, NULL);
+  g_slist_foreach (list, g_destroy_notify_to_func, free_func);
   g_slist_free (list);
 }
 
@@ -911,7 +911,7 @@ g_slist_insert_sorted (GSList       *list,
                        gpointer      data,
                        GCompareFunc  func)
 {
-  return g_slist_insert_sorted_real (list, data, (GFunc) func, NULL);
+  return g_slist_insert_sorted_real (list, data, (GFunc) g_compare_func_to_compare_data_func, func);
 }
 
 /**
@@ -1018,7 +1018,7 @@ GSList *
 g_slist_sort (GSList       *list,
               GCompareFunc  compare_func)
 {
-  return g_slist_sort_real (list, (GFunc) compare_func, NULL);
+  return g_slist_sort_real (list, (GFunc) g_compare_func_to_compare_data_func, compare_func);
 }
 
 /**
