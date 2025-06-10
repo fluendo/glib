@@ -174,6 +174,11 @@ struct _GTypeModuleClass
  */
 #define G_DEFINE_DYNAMIC_TYPE_EXTENDED(TypeName, type_name, TYPE_PARENT, flags, CODE) \
 static void     type_name##_init              (TypeName        *self); \
+static void     type_name##_init_adapter (TypeName *self, \
+    gpointer             class_data) \
+{ \
+  type_name##_init (self); \
+} \
 static void     type_name##_class_init        (TypeName##Class *klass); \
 static void     type_name##_class_finalize    (TypeName##Class *klass); \
 static gpointer type_name##_parent_class = NULL; \
@@ -202,12 +207,12 @@ type_name##_register_type (GTypeModule *type_module) \
     sizeof (TypeName##Class), \
     (GBaseInitFunc) NULL, \
     (GBaseFinalizeFunc) NULL, \
-    (GClassInitFunc)(void (*)(void)) type_name##_class_intern_init, \
-    (GClassFinalizeFunc)(void (*)(void)) type_name##_class_finalize, \
+    (GClassInitFunc) type_name##_class_intern_init, \
+    (GClassFinalizeFunc) type_name##_class_finalize, \
     NULL,   /* class_data */ \
     sizeof (TypeName), \
     0,      /* n_preallocs */ \
-    (GInstanceInitFunc)(void (*)(void)) type_name##_init, \
+    (GInstanceInitFunc) type_name##_init_adapter, \
     NULL    /* value_table */ \
   }; \
   type_name##_type_id = g_type_module_register_type (type_module, \
@@ -237,7 +242,7 @@ type_name##_register_type (GTypeModule *type_module) \
  */
 #define G_IMPLEMENT_INTERFACE_DYNAMIC(TYPE_IFACE, iface_init)       { \
   const GInterfaceInfo g_implement_interface_info = { \
-    (GInterfaceInitFunc)(void (*)(void)) iface_init, NULL, NULL      \
+    (GInterfaceInitFunc) iface_init, NULL, NULL      \
   }; \
   g_type_module_add_interface (type_module, g_define_type_id, TYPE_IFACE, &g_implement_interface_info); \
 }

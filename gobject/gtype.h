@@ -2114,7 +2114,7 @@ guint     g_type_get_type_registration_serial (void);
  */
 #define G_IMPLEMENT_INTERFACE(TYPE_IFACE, iface_init)       { \
   const GInterfaceInfo g_implement_interface_info = { \
-    (GInterfaceInitFunc)(void (*)(void)) iface_init, NULL, NULL \
+    (GInterfaceInitFunc) iface_init, NULL, NULL \
   }; \
   g_type_add_interface_static (g_define_type_id, TYPE_IFACE, &g_implement_interface_info); \
 }
@@ -2256,7 +2256,8 @@ guint     g_type_get_type_registration_serial (void);
  */
 #if GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_38
 #define _G_DEFINE_TYPE_EXTENDED_CLASS_INIT(TypeName, type_name) \
-static void     type_name##_class_intern_init (gpointer klass) \
+static void     type_name##_class_intern_init (gpointer klass, \
+                                               gpointer class_data) \
 { \
   type_name##_parent_class = g_type_class_peek_parent (klass); \
   if (TypeName##_private_offset != 0) \
@@ -2266,7 +2267,8 @@ static void     type_name##_class_intern_init (gpointer klass) \
 
 #else
 #define _G_DEFINE_TYPE_EXTENDED_CLASS_INIT(TypeName, type_name) \
-static void     type_name##_class_intern_init (gpointer klass) \
+static void     type_name##_class_intern_init (gpointer klass, \
+                                               gpointer class_data) \
 { \
   type_name##_parent_class = g_type_class_peek_parent (klass); \
   type_name##_class_init ((TypeName##Class*) klass); \
@@ -2288,6 +2290,11 @@ static void     type_name##_class_intern_init (gpointer klass) \
 \
 static void     type_name##_init              (TypeName        *self); \
 static void     type_name##_class_init        (TypeName##Class *klass); \
+static void     type_name##_init_adapter      (TypeName        *self, \
+                                               gpointer         class_data) \
+{ \
+  type_name##_init (self); \
+} \
 static GType    type_name##_get_type_once     (void); \
 static gpointer type_name##_parent_class = NULL; \
 static gint     TypeName##_private_offset; \
@@ -2325,9 +2332,9 @@ type_name##_get_type_once (void) \
         g_type_register_static_simple (TYPE_PARENT, \
                                        g_intern_static_string (#TypeName), \
                                        sizeof (TypeName##Class), \
-                                       (GClassInitFunc)(void (*)(void)) type_name##_class_intern_init, \
+                                       (GClassInitFunc) type_name##_class_intern_init, \
                                        sizeof (TypeName), \
-                                       (GInstanceInitFunc)(void (*)(void)) type_name##_init, \
+                                       (GInstanceInitFunc) type_name##_init_adapter, \
                                        (GTypeFlags) flags); \
     { /* custom code follows */
 #define _G_DEFINE_TYPE_EXTENDED_END()	\
@@ -2347,7 +2354,12 @@ type_name##_get_type_once (void) \
  * to avoid deprecation warnings with older GLIB_VERSION_MAX_ALLOWED */
 #define _G_DEFINE_INTERFACE_EXTENDED_BEGIN(TypeName, type_name, TYPE_PREREQ) \
 \
-static void     type_name##_default_init        (TypeName##Interface *klass); \
+static void     type_name##_default_init         (TypeName##Interface *klass); \
+static void     type_name##_default_init_adapter (TypeName##Interface *klass, \
+                                                  gpointer             class_data) \
+{ \
+  type_name##_default_init (klass); \
+} \
 \
 GType \
 type_name##_get_type (void) \
@@ -2359,7 +2371,7 @@ type_name##_get_type (void) \
         g_type_register_static_simple (G_TYPE_INTERFACE, \
                                        g_intern_static_string (#TypeName), \
                                        sizeof (TypeName##Interface), \
-                                       (GClassInitFunc)(void (*)(void)) type_name##_default_init, \
+                                       (GClassInitFunc) type_name##_default_init_adapter, \
                                        0, \
                                        (GInstanceInitFunc)NULL, \
                                        (GTypeFlags) 0); \
