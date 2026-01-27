@@ -2500,8 +2500,8 @@ g_ptr_array_sort (GPtrArray    *array,
     g_qsort_with_data (array->pdata,
                        array->len,
                        sizeof (gpointer),
-                       g_compare_func_to_compare_data_func,
-                       compare_func);
+                       (GCompareDataFunc)compare_func,
+                       NULL);
 }
 
 /* Please keep this doc-comment in sync with
