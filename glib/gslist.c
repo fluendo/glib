@@ -197,7 +197,7 @@ void
 g_slist_free_full (GSList         *list,
 		   GDestroyNotify  free_func)
 {
-  g_slist_foreach (list, g_destroy_notify_to_func, free_func);
+  g_slist_foreach (list, (GFunc) free_func, NULL);
   g_slist_free (list);
 }
 
