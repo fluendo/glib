@@ -326,7 +326,6 @@ glib_sources += files(
   'gtranslit.c',
   'gtrashstack.c',
   'gtree.c',
-  'gtypes.c',
   'guniprop.c',
   'gutf8.c',
   'gunibreak.c',
