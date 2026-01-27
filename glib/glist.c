@@ -1301,7 +1301,7 @@ GList *
 g_list_sort (GList        *list,
              GCompareFunc  compare_func)
 {
-  return g_list_sort_real (list, (GFunc) g_compare_func_to_compare_data_func, compare_func);
+  return g_list_sort_real (list, (GFunc) compare_func, NULL);
 }
 
 /**
