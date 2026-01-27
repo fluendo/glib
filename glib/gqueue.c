@@ -169,7 +169,7 @@ g_queue_clear_full (GQueue          *queue,
   g_return_if_fail (queue != NULL);
 
   if (free_func != NULL)
-    g_queue_foreach (queue, g_destroy_notify_to_func, free_func);
+    g_queue_foreach (queue, (GFunc) free_func, NULL);
 
   g_queue_clear (queue);
 }
