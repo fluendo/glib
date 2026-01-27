@@ -961,7 +961,7 @@ g_slist_insert_sorted (GSList       *list,
                        gpointer      data,
                        GCompareFunc  func)
 {
-  return g_slist_insert_sorted_real (list, data, (GFunc) g_compare_func_to_compare_data_func, func);
+  return g_slist_insert_sorted_real (list, data, (GFunc) func, NULL);
 }
 
 /**
