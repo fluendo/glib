@@ -4271,7 +4271,9 @@ g_main_context_iterate (GMainContext *context,
       UNLOCK_CONTEXT (context);
     }
 
+#ifndef G_WITH_EMSCRIPTEN
   if (!block)
+#endif
     timeout = 0;
   
   g_main_context_poll (context, timeout, max_priority, fds, nfds);
