@@ -88,8 +88,7 @@ struct _GUnixSocketAddressPrivate
   GUnixSocketAddressType address_type;
 };
 
-static void   g_unix_socket_address_connectable_iface_init (GSocketConnectableIface *iface,
-                                                            gpointer                 iface_data);
+static void   g_unix_socket_address_connectable_iface_init (GSocketConnectableIface *iface);
 static gchar *g_unix_socket_address_connectable_to_string  (GSocketConnectable      *connectable);
 
 G_DEFINE_TYPE_WITH_CODE (GUnixSocketAddress, g_unix_socket_address, G_TYPE_SOCKET_ADDRESS,
@@ -322,8 +321,7 @@ g_unix_socket_address_class_init (GUnixSocketAddressClass *klass)
 }
 
 static void
-g_unix_socket_address_connectable_iface_init (GSocketConnectableIface *iface,
-                                              gpointer                 iface_data)
+g_unix_socket_address_connectable_iface_init (GSocketConnectableIface *iface)
 {
   GSocketConnectableIface *parent_iface = g_type_interface_peek_parent (iface);
 

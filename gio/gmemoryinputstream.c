@@ -80,8 +80,7 @@ static gboolean g_memory_input_stream_close_finish (GInputStream         *stream
 						    GAsyncResult         *result,
 						    GError              **error);
 
-static void     g_memory_input_stream_seekable_iface_init (GSeekableIface  *iface,
-                                                           gpointer         iface_data);
+static void     g_memory_input_stream_seekable_iface_init (GSeekableIface  *iface);
 static goffset  g_memory_input_stream_tell                (GSeekable       *seekable);
 static gboolean g_memory_input_stream_can_seek            (GSeekable       *seekable);
 static gboolean g_memory_input_stream_seek                (GSeekable       *seekable,
@@ -95,8 +94,7 @@ static gboolean g_memory_input_stream_truncate            (GSeekable       *seek
                                                            GCancellable    *cancellable,
                                                            GError         **error);
 
-static void     g_memory_input_stream_pollable_iface_init (GPollableInputStreamInterface *iface,
-                                                           gpointer                       iface_data);
+static void     g_memory_input_stream_pollable_iface_init (GPollableInputStreamInterface *iface);
 static gboolean g_memory_input_stream_is_readable         (GPollableInputStream *stream);
 static GSource *g_memory_input_stream_create_source       (GPollableInputStream *stream,
 							   GCancellable          *cancellable);
@@ -147,8 +145,7 @@ g_memory_input_stream_finalize (GObject *object)
 }
 
 static void
-g_memory_input_stream_seekable_iface_init (GSeekableIface *iface,
-                                           gpointer        iface_data)
+g_memory_input_stream_seekable_iface_init (GSeekableIface *iface)
 {
   iface->tell         = g_memory_input_stream_tell;
   iface->can_seek     = g_memory_input_stream_can_seek;
@@ -158,8 +155,7 @@ g_memory_input_stream_seekable_iface_init (GSeekableIface *iface,
 }
 
 static void
-g_memory_input_stream_pollable_iface_init (GPollableInputStreamInterface *iface,
-                                           gpointer                       iface_data)
+g_memory_input_stream_pollable_iface_init (GPollableInputStreamInterface *iface)
 {
   iface->is_readable   = g_memory_input_stream_is_readable;
   iface->create_source = g_memory_input_stream_create_source;

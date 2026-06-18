@@ -33,10 +33,8 @@
 
 #define G_MEMORY_MONITOR_DBUS_GET_INITABLE_IFACE(o) (G_TYPE_INSTANCE_GET_INTERFACE ((o), G_TYPE_INITABLE, GInitable))
 
-static void g_memory_monitor_dbus_iface_init (GMemoryMonitorInterface *iface,
-                                              gpointer                 iface_data);
-static void g_memory_monitor_dbus_initable_iface_init (GInitableIface *iface,
-                                                       gpointer        iface_data);
+static void g_memory_monitor_dbus_iface_init (GMemoryMonitorInterface *iface);
+static void g_memory_monitor_dbus_initable_iface_init (GInitableIface *iface);
 
 struct _GMemoryMonitorDBus
 {
@@ -178,14 +176,12 @@ g_memory_monitor_dbus_class_init (GMemoryMonitorDBusClass *nl_class)
 }
 
 static void
-g_memory_monitor_dbus_iface_init (GMemoryMonitorInterface *monitor_iface,
-                                  gpointer                 iface_data)
+g_memory_monitor_dbus_iface_init (GMemoryMonitorInterface *monitor_iface)
 {
 }
 
 static void
-g_memory_monitor_dbus_initable_iface_init (GInitableIface *iface,
-                                           gpointer        iface_data)
+g_memory_monitor_dbus_initable_iface_init (GInitableIface *iface)
 {
   iface->init = g_memory_monitor_dbus_initable_init;
 }

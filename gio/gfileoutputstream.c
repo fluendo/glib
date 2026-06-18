@@ -54,8 +54,7 @@
  * stream, use g_seekable_truncate().
  **/
 
-static void       g_file_output_stream_seekable_iface_init    (GSeekableIface       *iface,
-                                                               gpointer              iface_data);
+static void       g_file_output_stream_seekable_iface_init    (GSeekableIface       *iface);
 static goffset    g_file_output_stream_seekable_tell          (GSeekable            *seekable);
 static gboolean   g_file_output_stream_seekable_can_seek      (GSeekable            *seekable);
 static gboolean   g_file_output_stream_seekable_seek          (GSeekable            *seekable,
@@ -95,8 +94,7 @@ g_file_output_stream_class_init (GFileOutputStreamClass *klass)
 }
 
 static void
-g_file_output_stream_seekable_iface_init (GSeekableIface *iface,
-                                          gpointer        iface_data)
+g_file_output_stream_seekable_iface_init (GSeekableIface *iface)
 {
   iface->tell = g_file_output_stream_seekable_tell;
   iface->can_seek = g_file_output_stream_seekable_can_seek;

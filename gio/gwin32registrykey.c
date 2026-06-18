@@ -434,8 +434,7 @@ struct _GWin32RegistryKeyPrivate {
   gpointer user_data;
 };
 
-static void     g_win32_registry_key_initable_iface_init (GInitableIface  *iface,
-                                                          gpointer         iface_data);
+static void     g_win32_registry_key_initable_iface_init (GInitableIface  *iface);
 static gboolean g_win32_registry_key_initable_init       (GInitable       *initable,
                                                           GCancellable    *cancellable,
                                                           GError         **error);
@@ -542,8 +541,7 @@ g_win32_registry_key_new_w (const gunichar2  *path,
 }
 
 static void
-g_win32_registry_key_initable_iface_init (GInitableIface *iface,
-                                          gpointer        iface_data)
+g_win32_registry_key_initable_iface_init (GInitableIface *iface)
 {
   iface->init = g_win32_registry_key_initable_init;
 }

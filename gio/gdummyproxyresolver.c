@@ -38,8 +38,7 @@ struct _GDummyProxyResolver {
   GObject parent_instance;
 };
 
-static void g_dummy_proxy_resolver_iface_init (GProxyResolverInterface *iface,
-                                               gpointer                 iface_data);
+static void g_dummy_proxy_resolver_iface_init (GProxyResolverInterface *iface);
 
 #define g_dummy_proxy_resolver_get_type _g_dummy_proxy_resolver_get_type
 G_DEFINE_TYPE_WITH_CODE (GDummyProxyResolver, g_dummy_proxy_resolver, G_TYPE_OBJECT,
@@ -128,8 +127,7 @@ g_dummy_proxy_resolver_class_init (GDummyProxyResolverClass *resolver_class)
 }
 
 static void
-g_dummy_proxy_resolver_iface_init (GProxyResolverInterface *iface,
-                                   gpointer                 iface_data)
+g_dummy_proxy_resolver_iface_init (GProxyResolverInterface *iface)
 {
   iface->is_supported = g_dummy_proxy_resolver_is_supported;
   iface->lookup = g_dummy_proxy_resolver_lookup;

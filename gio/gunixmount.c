@@ -63,8 +63,7 @@ struct _GUnixMount {
   gboolean can_eject;
 };
 
-static void g_unix_mount_mount_iface_init (GMountIface *iface,
-                                           gpointer     iface_data);
+static void g_unix_mount_mount_iface_init (GMountIface *iface);
 
 #define g_unix_mount_get_type _g_unix_mount_get_type
 G_DEFINE_TYPE_WITH_CODE (GUnixMount, g_unix_mount, G_TYPE_OBJECT,
@@ -380,8 +379,7 @@ g_unix_mount_eject_finish (GMount       *mount,
 }
 
 static void
-g_unix_mount_mount_iface_init (GMountIface *iface,
-                               gpointer     iface_data)
+g_unix_mount_mount_iface_init (GMountIface *iface)
 {
   iface->get_root = g_unix_mount_get_root;
   iface->get_name = g_unix_mount_get_name;

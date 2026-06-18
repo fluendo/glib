@@ -99,8 +99,7 @@ static gboolean g_memory_output_stream_close_finish (GOutputStream        *strea
                                                      GAsyncResult         *result,
                                                      GError              **error);
 
-static void     g_memory_output_stream_seekable_iface_init (GSeekableIface  *iface,
-                                                            gpointer         iface_data);
+static void     g_memory_output_stream_seekable_iface_init (GSeekableIface  *iface);
 static goffset  g_memory_output_stream_tell                (GSeekable       *seekable);
 static gboolean g_memory_output_stream_can_seek            (GSeekable       *seekable);
 static gboolean g_memory_output_stream_seek                (GSeekable       *seekable,
@@ -118,8 +117,7 @@ static gboolean g_memory_output_stream_is_writable       (GPollableOutputStream 
 static GSource *g_memory_output_stream_create_source     (GPollableOutputStream *stream,
                                                           GCancellable          *cancellable);
 
-static void g_memory_output_stream_pollable_iface_init (GPollableOutputStreamInterface *iface,
-                                                        gpointer                        iface_data);
+static void g_memory_output_stream_pollable_iface_init (GPollableOutputStreamInterface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (GMemoryOutputStream, g_memory_output_stream, G_TYPE_OUTPUT_STREAM,
                          G_ADD_PRIVATE (GMemoryOutputStream)
@@ -226,8 +224,7 @@ g_memory_output_stream_class_init (GMemoryOutputStreamClass *klass)
 }
 
 static void
-g_memory_output_stream_pollable_iface_init (GPollableOutputStreamInterface *iface,
-                                            gpointer                        iface_data)
+g_memory_output_stream_pollable_iface_init (GPollableOutputStreamInterface *iface)
 {
   iface->is_writable = g_memory_output_stream_is_writable;
   iface->create_source = g_memory_output_stream_create_source;
@@ -316,8 +313,7 @@ g_memory_output_stream_finalize (GObject *object)
 }
 
 static void
-g_memory_output_stream_seekable_iface_init (GSeekableIface *iface,
-                                            gpointer        iface_data)
+g_memory_output_stream_seekable_iface_init (GSeekableIface *iface)
 {
   iface->tell         = g_memory_output_stream_tell;
   iface->can_seek     = g_memory_output_stream_can_seek;

@@ -90,8 +90,7 @@ enum {
   PROP_FILENAME
 };
 
-static void     g_desktop_app_info_iface_init         (GAppInfoIface    *iface,
-                                                       gpointer          iface_data);
+static void     g_desktop_app_info_iface_init         (GAppInfoIface    *iface);
 static gboolean g_desktop_app_info_ensure_saved       (GDesktopAppInfo  *info,
                                                        GError          **error);
 static gboolean g_desktop_app_info_load_file (GDesktopAppInfo *self);
@@ -4383,8 +4382,7 @@ g_app_info_create_from_commandline (const char           *commandline,
 /* GAppInfo interface init */
 
 static void
-g_desktop_app_info_iface_init (GAppInfoIface *iface,
-                               gpointer       iface_data)
+g_desktop_app_info_iface_init (GAppInfoIface *iface)
 {
   iface->dup = g_desktop_app_info_dup;
   iface->equal = g_desktop_app_info_equal;

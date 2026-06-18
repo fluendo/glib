@@ -399,8 +399,7 @@ struct _GParamSpecTypeInfo
   /* type system portion */
   guint16         instance_size;                               /* obligatory */
   guint16         n_preallocs;                                 /* optional */
-  void		(*instance_init)	(GParamSpec   *pspec,  /* optional */
-					 gpointer      class_data);
+  void		(*instance_init)	(GParamSpec   *pspec); /* optional */
 
   /* class portion */
   GType           value_type;				       /* obligatory */

@@ -35,10 +35,8 @@ G_DECLARE_FINAL_TYPE (GMemoryMonitorWin32, g_memory_monitor_win32, G, MEMORY_MON
 
 #define G_MEMORY_MONITOR_WIN32_GET_INITABLE_IFACE(o) (G_TYPE_INSTANCE_GET_INTERFACE ((o), G_TYPE_INITABLE, GInitable))
 
-static void g_memory_monitor_win32_iface_init (GMemoryMonitorInterface *iface,
-                                               gpointer                 iface_data);
-static void g_memory_monitor_win32_initable_iface_init (GInitableIface *iface,
-                                                        gpointer        iface_data);
+static void g_memory_monitor_win32_iface_init (GMemoryMonitorInterface *iface);
+static void g_memory_monitor_win32_initable_iface_init (GInitableIface *iface);
 
 struct _GMemoryMonitorWin32
 {
@@ -254,14 +252,12 @@ g_memory_monitor_win32_class_init (GMemoryMonitorWin32Class *nl_class)
 }
 
 static void
-g_memory_monitor_win32_iface_init (GMemoryMonitorInterface *monitor_iface,
-                                   gpointer                 iface_data)
+g_memory_monitor_win32_iface_init (GMemoryMonitorInterface *monitor_iface)
 {
 }
 
 static void
-g_memory_monitor_win32_initable_iface_init (GInitableIface *iface,
-                                            gpointer        iface_data)
+g_memory_monitor_win32_initable_iface_init (GInitableIface *iface)
 {
   iface->init = g_memory_monitor_win32_initable_init;
 }
