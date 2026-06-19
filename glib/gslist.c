@@ -890,10 +890,10 @@ g_slist_foreach (GSList   *list,
 }
 
 static GSList*
-g_slist_insert_sorted_real (GSList   *list,
-                            gpointer  data,
-                            GFunc     func,
-                            gpointer  user_data)
+g_slist_insert_sorted_real (GSList               *list,
+                            gpointer             data,
+                            GCompareDataFunc     func,
+                            gpointer             user_data)
 {
   GSList *tmp_list = list;
   GSList *prev_list = NULL;
@@ -910,14 +910,14 @@ g_slist_insert_sorted_real (GSList   *list,
       return new_list;
     }
 
-  cmp = ((GCompareDataFunc) func) (data, tmp_list->data, user_data);
+  cmp = func (data, tmp_list->data, user_data);
 
   while ((tmp_list->next) && (cmp > 0))
     {
       prev_list = tmp_list;
       tmp_list = tmp_list->next;
 
-      cmp = ((GCompareDataFunc) func) (data, tmp_list->data, user_data);
+      cmp = func (data, tmp_list->data, user_data);
     }
 
   new_list = _g_slist_alloc ();
@@ -961,7 +961,7 @@ g_slist_insert_sorted (GSList       *list,
                        gpointer      data,
                        GCompareFunc  func)
 {
-  return g_slist_insert_sorted_real (list, data, (GFunc) func, NULL);
+  return g_slist_insert_sorted_real (list, data, (GCompareDataFunc) func, NULL);
 }
 
 /**
@@ -986,14 +986,14 @@ g_slist_insert_sorted_with_data (GSList           *list,
                                  GCompareDataFunc  func,
                                  gpointer          user_data)
 {
-  return g_slist_insert_sorted_real (list, data, (GFunc) func, user_data);
+  return g_slist_insert_sorted_real (list, data, func, user_data);
 }
 
 static GSList *
-g_slist_sort_merge (GSList   *l1,
-                    GSList   *l2,
-                    GFunc     compare_func,
-                    gpointer  user_data)
+g_slist_sort_merge (GSList               *l1,
+                    GSList               *l2,
+                    GCompareDataFunc     compare_func,
+                    gpointer             user_data)
 {
   GSList list, *l;
   gint cmp;
@@ -1002,7 +1002,7 @@ g_slist_sort_merge (GSList   *l1,
 
   while (l1 && l2)
     {
-      cmp = ((GCompareDataFunc) compare_func) (l1->data, l2->data, user_data);
+      cmp = compare_func (l1->data, l2->data, user_data);
 
       if (cmp <= 0)
         {
@@ -1021,9 +1021,9 @@ g_slist_sort_merge (GSList   *l1,
 }
 
 static GSList *
-g_slist_sort_real (GSList   *list,
-                   GFunc     compare_func,
-                   gpointer  user_data)
+g_slist_sort_real (GSList               *list,
+                   GCompareDataFunc     compare_func,
+                   gpointer             user_data)
 {
   GSList *l1, *l2;
 
@@ -1068,7 +1068,7 @@ GSList *
 g_slist_sort (GSList       *list,
               GCompareFunc  compare_func)
 {
-  return g_slist_sort_real (list, (GFunc) compare_func, NULL);
+  return g_slist_sort_real (list, (GCompareDataFunc) compare_func, NULL);
 }
 
 /**
@@ -1086,7 +1086,7 @@ g_slist_sort_with_data (GSList           *list,
                         GCompareDataFunc  compare_func,
                         gpointer          user_data)
 {
-  return g_slist_sort_real (list, (GFunc) compare_func, user_data);
+  return g_slist_sort_real (list, compare_func, user_data);
 }
 
 /**
