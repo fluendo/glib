@@ -93,8 +93,8 @@ static gssize   g_converter_input_stream_read_nonblocking (GPollableInputStream 
 static GSource *g_converter_input_stream_create_source    (GPollableInputStream *stream,
 							   GCancellable          *cancellable);
 
-static void g_converter_input_stream_pollable_iface_init  (GPollableInputStreamInterface *iface,
-                                                           gpointer                       iface_data);
+static void g_converter_input_stream_pollable_iface_init  (GPollableInputStreamInterface *iface);
+
 G_DEFINE_TYPE_WITH_CODE (GConverterInputStream,
 			 g_converter_input_stream,
 			 G_TYPE_FILTER_INPUT_STREAM,
@@ -129,8 +129,7 @@ g_converter_input_stream_class_init (GConverterInputStreamClass *klass)
 }
 
 static void
-g_converter_input_stream_pollable_iface_init (GPollableInputStreamInterface *iface,
-                                              gpointer                       iface_data)
+g_converter_input_stream_pollable_iface_init (GPollableInputStreamInterface *iface)
 {
   iface->can_poll = g_converter_input_stream_can_poll;
   iface->is_readable = g_converter_input_stream_is_readable;

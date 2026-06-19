@@ -56,8 +56,7 @@ struct _GInetAddressMaskPrivate
   guint         length;
 };
 
-static void     g_inet_address_mask_initable_iface_init (GInitableIface  *iface,
-                                                         gpointer         iface_data);
+static void     g_inet_address_mask_initable_iface_init (GInitableIface  *iface);
 
 G_DEFINE_TYPE_WITH_CODE (GInetAddressMask, g_inet_address_mask, G_TYPE_OBJECT,
                          G_ADD_PRIVATE (GInetAddressMask)
@@ -231,8 +230,7 @@ g_inet_address_mask_initable_init (GInitable     *initable,
 }
 
 static void
-g_inet_address_mask_initable_iface_init (GInitableIface  *iface,
-                                         gpointer         iface_data)
+g_inet_address_mask_initable_iface_init (GInitableIface  *iface)
 {
   iface->init = g_inet_address_mask_initable_init;
 }

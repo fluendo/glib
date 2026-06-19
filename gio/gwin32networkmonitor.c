@@ -46,10 +46,8 @@
 #include "gioerror.h"
 
 static GInitableIface *initable_parent_iface;
-static void g_win32_network_monitor_iface_init (GNetworkMonitorInterface *iface,
-                                                gpointer                  iface_data);
-static void g_win32_network_monitor_initable_iface_init (GInitableIface *iface,
-                                                         gpointer        iface_data);
+static void g_win32_network_monitor_iface_init (GNetworkMonitorInterface *iface);
+static void g_win32_network_monitor_initable_iface_init (GInitableIface *iface);
 
 struct _GWin32NetworkMonitorPrivate
 {
@@ -330,14 +328,12 @@ g_win32_network_monitor_class_init (GWin32NetworkMonitorClass *win_class)
 }
 
 static void
-g_win32_network_monitor_iface_init (GNetworkMonitorInterface *monitor_iface,
-                                    gpointer                  iface_data)
+g_win32_network_monitor_iface_init (GNetworkMonitorInterface *monitor_iface)
 {
 }
 
 static void
-g_win32_network_monitor_initable_iface_init (GInitableIface *iface,
-                                             gpointer        iface_data)
+g_win32_network_monitor_initable_iface_init (GInitableIface *iface)
 {
   initable_parent_iface = g_type_interface_peek_parent (iface);
 

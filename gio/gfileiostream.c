@@ -62,8 +62,7 @@
  * Since: 2.22
  **/
 
-static void       g_file_io_stream_seekable_iface_init    (GSeekableIface       *iface,
-                                                           gpointer              iface_data);
+static void       g_file_io_stream_seekable_iface_init    (GSeekableIface       *iface);
 static goffset    g_file_io_stream_seekable_tell          (GSeekable            *seekable);
 static gboolean   g_file_io_stream_seekable_can_seek      (GSeekable            *seekable);
 static gboolean   g_file_io_stream_seekable_seek          (GSeekable            *seekable,
@@ -96,8 +95,7 @@ G_DEFINE_TYPE_WITH_CODE (GFileIOStream, g_file_io_stream, G_TYPE_IO_STREAM,
 						g_file_io_stream_seekable_iface_init))
 
 static void
-g_file_io_stream_seekable_iface_init (GSeekableIface *iface,
-                                      gpointer        iface_data)
+g_file_io_stream_seekable_iface_init (GSeekableIface *iface)
 {
   iface->tell = g_file_io_stream_seekable_tell;
   iface->can_seek = g_file_io_stream_seekable_can_seek;

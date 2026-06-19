@@ -37,8 +37,7 @@
 
 #include "glibintl.h"
 
-static void g_winhttp_file_file_iface_init (GFileIface *iface,
-                                            gpointer    iface_data);
+static void g_winhttp_file_file_iface_init (GFileIface *iface);
 
 #define g_winhttp_file_get_type _g_winhttp_file_get_type
 G_DEFINE_TYPE_WITH_CODE (GWinHttpFile, g_winhttp_file, G_TYPE_OBJECT,
@@ -758,8 +757,7 @@ g_winhttp_file_move (GFile                  *source,
 #endif
 
 static void
-g_winhttp_file_file_iface_init (GFileIface *iface,
-                                gpointer    iface_data)
+g_winhttp_file_file_iface_init (GFileIface *iface)
 {
   iface->dup = g_winhttp_file_dup;
   iface->hash = g_winhttp_file_hash;

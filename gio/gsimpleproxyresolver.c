@@ -64,8 +64,7 @@ struct _GSimpleProxyResolverPrivate {
   GSimpleProxyResolverDomain *ignore_domains;
 };
 
-static void g_simple_proxy_resolver_iface_init (GProxyResolverInterface *iface,
-                                                gpointer                 iface_data);
+static void g_simple_proxy_resolver_iface_init (GProxyResolverInterface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (GSimpleProxyResolver, g_simple_proxy_resolver, G_TYPE_OBJECT,
                          G_ADD_PRIVATE (GSimpleProxyResolver)
@@ -485,8 +484,7 @@ g_simple_proxy_resolver_class_init (GSimpleProxyResolverClass *resolver_class)
 }
 
 static void
-g_simple_proxy_resolver_iface_init (GProxyResolverInterface *iface,
-                                    gpointer                 iface_data)
+g_simple_proxy_resolver_iface_init (GProxyResolverInterface *iface)
 {
   iface->lookup = g_simple_proxy_resolver_lookup;
   iface->lookup_async = g_simple_proxy_resolver_lookup_async;

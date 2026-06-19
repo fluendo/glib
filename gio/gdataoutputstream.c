@@ -60,8 +60,7 @@ static void g_data_output_stream_get_property (GObject      *object,
 					       GValue       *value,
 					       GParamSpec   *pspec);
 
-static void     g_data_output_stream_seekable_iface_init (GSeekableIface  *iface,
-                                                          gpointer         iface_data);
+static void     g_data_output_stream_seekable_iface_init (GSeekableIface  *iface);
 static goffset  g_data_output_stream_tell                (GSeekable       *seekable);
 static gboolean g_data_output_stream_can_seek            (GSeekable       *seekable);
 static gboolean g_data_output_stream_seek                (GSeekable       *seekable,
@@ -163,8 +162,7 @@ g_data_output_stream_init (GDataOutputStream *stream)
 }
 
 static void
-g_data_output_stream_seekable_iface_init (GSeekableIface *iface,
-                                          gpointer        iface_data)
+g_data_output_stream_seekable_iface_init (GSeekableIface *iface)
 {
   iface->tell         = g_data_output_stream_tell;
   iface->can_seek     = g_data_output_stream_can_seek;

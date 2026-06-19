@@ -174,12 +174,9 @@ enum
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-static void initable_iface_init       (GInitableIface *initable_iface,
-                                       gpointer        iface_data);
-static void async_initable_iface_init (GAsyncInitableIface *async_initable_iface,
-                                       gpointer             iface_data);
-static void dbus_object_manager_interface_init (GDBusObjectManagerIface *iface,
-                                                gpointer                 iface_data);
+static void initable_iface_init       (GInitableIface *initable_iface);
+static void async_initable_iface_init (GAsyncInitableIface *async_initable_iface);
+static void dbus_object_manager_interface_init (GDBusObjectManagerIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (GDBusObjectManagerClient, g_dbus_object_manager_client, G_TYPE_OBJECT,
                          G_ADD_PRIVATE (GDBusObjectManagerClient)
@@ -1518,15 +1515,13 @@ initable_init (GInitable     *initable,
 }
 
 static void
-initable_iface_init (GInitableIface *initable_iface,
-                     gpointer        iface_data)
+initable_iface_init (GInitableIface *initable_iface)
 {
   initable_iface->init = initable_init;
 }
 
 static void
-async_initable_iface_init (GAsyncInitableIface *async_initable_iface,
-                           gpointer             iface_data)
+async_initable_iface_init (GAsyncInitableIface *async_initable_iface)
 {
   /* for now, just use default: run GInitable code in thread */
 }
@@ -1867,8 +1862,7 @@ g_dbus_object_manager_client_get_objects (GDBusObjectManager *_manager)
 
 
 static void
-dbus_object_manager_interface_init (GDBusObjectManagerIface *iface,
-                                    gpointer                 iface_data)
+dbus_object_manager_interface_init (GDBusObjectManagerIface *iface)
 {
   iface->get_object_path = g_dbus_object_manager_client_get_object_path;
   iface->get_objects     = g_dbus_object_manager_client_get_objects;

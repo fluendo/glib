@@ -33,8 +33,7 @@
 #include "gfile.h"
 
 
-static void g_dummy_file_file_iface_init (GFileIface *iface,
-                                          gpointer    iface_data);
+static void g_dummy_file_file_iface_init (GFileIface *iface);
 
 typedef struct {
   char *scheme;
@@ -399,8 +398,7 @@ g_dummy_file_get_uri_scheme (GFile *file)
 
 
 static void
-g_dummy_file_file_iface_init (GFileIface *iface,
-                              gpointer    iface_data)
+g_dummy_file_file_iface_init (GFileIface *iface)
 {
   iface->dup = g_dummy_file_dup;
   iface->hash = g_dummy_file_hash;
