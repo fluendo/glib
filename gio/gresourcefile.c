@@ -68,8 +68,7 @@ struct _GResourceFileEnumeratorClass
 typedef struct _GResourceFileEnumerator        GResourceFileEnumerator;
 typedef struct _GResourceFileEnumeratorClass   GResourceFileEnumeratorClass;
 
-static void g_resource_file_file_iface_init (GFileIface *iface,
-                                             gpointer    iface_data);
+static void g_resource_file_file_iface_init (GFileIface *iface);
 
 static GFileAttributeInfoList *resource_writable_attributes = NULL;
 static GFileAttributeInfoList *resource_writable_namespaces = NULL;
@@ -662,8 +661,7 @@ g_resource_file_set_display_name (GFile         *file,
 }
 
 static void
-g_resource_file_file_iface_init (GFileIface *iface,
-                                 gpointer    iface_data)
+g_resource_file_file_iface_init (GFileIface *iface)
 {
   iface->dup = g_resource_file_dup;
   iface->hash = g_resource_file_hash;

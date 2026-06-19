@@ -287,10 +287,8 @@ enum
 
 static guint g_application_signals[NR_SIGNALS];
 
-static void g_application_action_group_iface_init (GActionGroupInterface *iface,
-                                                   gpointer               iface_data);
-static void g_application_action_map_iface_init (GActionMapInterface *iface,
-                                                 gpointer             iface_data);
+static void g_application_action_group_iface_init (GActionGroupInterface *);
+static void g_application_action_map_iface_init (GActionMapInterface *);
 G_DEFINE_TYPE_WITH_CODE (GApplication, g_application, G_TYPE_OBJECT,
  G_ADD_PRIVATE (GApplication)
  G_IMPLEMENT_INTERFACE (G_TYPE_ACTION_GROUP, g_application_action_group_iface_init)
@@ -316,8 +314,7 @@ typedef struct
 } GApplicationExportedActions;
 
 static GType g_application_exported_actions_get_type   (void);
-static void  g_application_exported_actions_iface_init (GRemoteActionGroupInterface *iface,
-                                                        gpointer                     iface_data);
+static void  g_application_exported_actions_iface_init (GRemoteActionGroupInterface *iface);
 G_DEFINE_TYPE_WITH_CODE (GApplicationExportedActions, g_application_exported_actions, G_TYPE_SIMPLE_ACTION_GROUP,
                          G_IMPLEMENT_INTERFACE (G_TYPE_REMOTE_ACTION_GROUP, g_application_exported_actions_iface_init))
 
@@ -361,8 +358,7 @@ g_application_exported_actions_init (GApplicationExportedActions *actions)
 }
 
 static void
-g_application_exported_actions_iface_init (GRemoteActionGroupInterface *iface,
-                                           gpointer                     iface_data)
+g_application_exported_actions_iface_init (GRemoteActionGroupInterface *iface)
 {
   iface->activate_action_full = g_application_exported_actions_activate_action_full;
   iface->change_action_state_full = g_application_exported_actions_change_action_state_full;
@@ -2737,8 +2733,7 @@ g_application_remove_action (GActionMap  *action_map,
 }
 
 static void
-g_application_action_group_iface_init (GActionGroupInterface *iface,
-                                       gpointer               iface_data)
+g_application_action_group_iface_init (GActionGroupInterface *iface)
 {
   iface->list_actions = g_application_list_actions;
   iface->query_action = g_application_query_action;
@@ -2747,8 +2742,7 @@ g_application_action_group_iface_init (GActionGroupInterface *iface,
 }
 
 static void
-g_application_action_map_iface_init (GActionMapInterface *iface,
-                                     gpointer             iface_data)
+g_application_action_map_iface_init (GActionMapInterface *iface)
 {
   iface->lookup_action = g_application_lookup_action;
   iface->add_action = g_application_add_action;

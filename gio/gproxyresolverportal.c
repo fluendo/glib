@@ -33,8 +33,7 @@ struct _GProxyResolverPortal {
   gboolean network_available;
 };
 
-static void g_proxy_resolver_portal_iface_init (GProxyResolverInterface *iface,
-                                                gpointer                 iface_data);
+static void g_proxy_resolver_portal_iface_init (GProxyResolverInterface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (GProxyResolverPortal, g_proxy_resolver_portal, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (G_TYPE_PROXY_RESOLVER,
@@ -202,8 +201,7 @@ g_proxy_resolver_portal_class_init (GProxyResolverPortalClass *resolver_class)
 }
 
 static void
-g_proxy_resolver_portal_iface_init (GProxyResolverInterface *iface,
-                                    gpointer                 iface_data)
+g_proxy_resolver_portal_iface_init (GProxyResolverInterface *iface)
 {
   iface->is_supported = g_proxy_resolver_portal_is_supported;
   iface->lookup = g_proxy_resolver_portal_lookup;

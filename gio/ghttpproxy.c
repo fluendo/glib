@@ -53,8 +53,7 @@ struct _GHttpProxyClass
   GObjectClass parent_class;
 };
 
-static void g_http_proxy_iface_init (GProxyInterface *proxy_iface,
-                                     gpointer         iface_data);
+static void g_http_proxy_iface_init (GProxyInterface *proxy_iface);
 
 #define g_http_proxy_get_type _g_http_proxy_get_type
 G_DEFINE_TYPE_WITH_CODE (GHttpProxy, g_http_proxy, G_TYPE_OBJECT,
@@ -380,8 +379,7 @@ g_http_proxy_class_init (GHttpProxyClass *class)
 }
 
 static void
-g_http_proxy_iface_init (GProxyInterface *proxy_iface,
-                         gpointer         iface_data)
+g_http_proxy_iface_init (GProxyInterface *proxy_iface)
 {
   proxy_iface->connect = g_http_proxy_connect;
   proxy_iface->connect_async = g_http_proxy_connect_async;

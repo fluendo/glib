@@ -33,10 +33,8 @@
 #include "gtask.h"
 #include "glibintl.h"
 
-static void g_network_monitor_base_iface_init (GNetworkMonitorInterface *iface,
-                                               gpointer                  iface_data);
-static void g_network_monitor_base_initable_iface_init (GInitableIface *iface,
-                                                        gpointer        iface_data);
+static void g_network_monitor_base_iface_init (GNetworkMonitorInterface *iface);
+static void g_network_monitor_base_initable_iface_init (GInitableIface *iface);
 
 enum
 {
@@ -346,8 +344,7 @@ g_network_monitor_base_can_reach_finish (GNetworkMonitor  *monitor,
 }
 
 static void
-g_network_monitor_base_iface_init (GNetworkMonitorInterface *monitor_iface,
-                                   gpointer                  iface_data)
+g_network_monitor_base_iface_init (GNetworkMonitorInterface *monitor_iface)
 {
   monitor_iface->can_reach = g_network_monitor_base_can_reach;
   monitor_iface->can_reach_async = g_network_monitor_base_can_reach_async;
@@ -369,8 +366,7 @@ g_network_monitor_base_initable_init (GInitable     *initable,
 }
 
 static void
-g_network_monitor_base_initable_iface_init (GInitableIface *iface,
-                                            gpointer        iface_data)
+g_network_monitor_base_initable_iface_init (GInitableIface *iface)
 {
   iface->init = g_network_monitor_base_initable_init;
 }

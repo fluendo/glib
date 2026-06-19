@@ -58,8 +58,7 @@ struct _GEmblemedIconPrivate {
 
 static GParamSpec *properties[NUM_PROPERTIES] = { NULL, };
 
-static void g_emblemed_icon_icon_iface_init (GIconIface *iface,
-                                             gpointer    iface_data);
+static void g_emblemed_icon_icon_iface_init (GIconIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (GEmblemedIcon, g_emblemed_icon, G_TYPE_OBJECT,
                          G_ADD_PRIVATE (GEmblemedIcon)
@@ -460,8 +459,7 @@ g_emblemed_icon_serialize (GIcon *icon)
 }
 
 static void
-g_emblemed_icon_icon_iface_init (GIconIface *iface,
-                                 gpointer    iface_data)
+g_emblemed_icon_icon_iface_init (GIconIface *iface)
 {
   iface->hash = g_emblemed_icon_hash;
   iface->equal = g_emblemed_icon_equal;

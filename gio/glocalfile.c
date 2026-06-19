@@ -99,8 +99,7 @@
 #endif
 
 
-static void g_local_file_file_iface_init (GFileIface *iface,
-                                          gpointer    iface_data);
+static void g_local_file_file_iface_init (GFileIface *iface);
 
 static GFileAttributeInfoList *local_writable_attributes = NULL;
 static /* GFileAttributeInfoList * */ gsize local_writable_namespaces = 0;
@@ -3005,8 +3004,7 @@ g_local_file_measure_disk_usage (GFile                         *file,
 }
 
 static void
-g_local_file_file_iface_init (GFileIface *iface,
-                              gpointer    iface_data)
+g_local_file_file_iface_init (GFileIface *iface)
 {
   iface->dup = g_local_file_dup;
   iface->hash = g_local_file_hash;

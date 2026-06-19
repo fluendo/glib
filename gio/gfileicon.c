@@ -43,10 +43,8 @@
  * 
  **/
 
-static void g_file_icon_icon_iface_init          (GIconIface          *iface,
-                                                  gpointer             iface_data);
-static void g_file_icon_loadable_icon_iface_init (GLoadableIconIface  *iface,
-                                                  gpointer             iface_data);
+static void g_file_icon_icon_iface_init          (GIconIface          *iface);
+static void g_file_icon_loadable_icon_iface_init (GLoadableIconIface  *iface);
 static void g_file_icon_load_async               (GLoadableIcon       *icon,
 						  int                  size,
 						  GCancellable        *cancellable,
@@ -282,8 +280,7 @@ g_file_icon_serialize (GIcon *icon)
 }
 
 static void
-g_file_icon_icon_iface_init (GIconIface *iface,
-                             gpointer    iface_data)
+g_file_icon_icon_iface_init (GIconIface *iface)
 {
   iface->hash = g_file_icon_hash;
   iface->equal = g_file_icon_equal;
@@ -363,8 +360,7 @@ g_file_icon_load_finish (GLoadableIcon  *icon,
 }
 
 static void
-g_file_icon_loadable_icon_iface_init (GLoadableIconIface *iface,
-                                      gpointer            iface_data)
+g_file_icon_loadable_icon_iface_init (GLoadableIconIface *iface)
 {
   iface->load = g_file_icon_load;
   iface->load_async = g_file_icon_load_async;

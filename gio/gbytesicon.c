@@ -59,10 +59,8 @@ enum
   PROP_BYTES
 };
 
-static void g_bytes_icon_icon_iface_init          (GIconIface          *iface,
-                                                   gpointer             iface_data);
-static void g_bytes_icon_loadable_icon_iface_init (GLoadableIconIface  *iface,
-                                                   gpointer             iface_data);
+static void g_bytes_icon_icon_iface_init          (GIconIface          *iface);
+static void g_bytes_icon_loadable_icon_iface_init (GLoadableIconIface  *iface);
 G_DEFINE_TYPE_WITH_CODE (GBytesIcon, g_bytes_icon, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (G_TYPE_ICON, g_bytes_icon_icon_iface_init)
                          G_IMPLEMENT_INTERFACE (G_TYPE_LOADABLE_ICON, g_bytes_icon_loadable_icon_iface_init))
@@ -212,8 +210,7 @@ g_bytes_icon_serialize (GIcon *icon)
 }
 
 static void
-g_bytes_icon_icon_iface_init (GIconIface *iface,
-                              gpointer    iface_data)
+g_bytes_icon_icon_iface_init (GIconIface *iface)
 {
   iface->hash = g_bytes_icon_hash;
   iface->equal = g_bytes_icon_equal;
@@ -266,8 +263,7 @@ g_bytes_icon_load_finish (GLoadableIcon  *icon,
 }
 
 static void
-g_bytes_icon_loadable_icon_iface_init (GLoadableIconIface *iface,
-                                       gpointer            iface_data)
+g_bytes_icon_loadable_icon_iface_init (GLoadableIconIface *iface)
 {
   iface->load = g_bytes_icon_load;
   iface->load_async = g_bytes_icon_load_async;

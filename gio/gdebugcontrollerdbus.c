@@ -160,10 +160,8 @@ static GDBusInterfaceInfo *org_gtk_Debugging;
 
 #define G_DEBUG_CONTROLLER_DBUS_GET_INITABLE_IFACE(o) (G_TYPE_INSTANCE_GET_INTERFACE ((o), G_TYPE_INITABLE, GInitable))
 
-static void g_debug_controller_dbus_iface_init (GDebugControllerInterface *iface,
-                                                gpointer                   iface_data);
-static void g_debug_controller_dbus_initable_iface_init (GInitableIface *iface,
-                                                         gpointer        iface_data);
+static void g_debug_controller_dbus_iface_init (GDebugControllerInterface *iface);
+static void g_debug_controller_dbus_initable_iface_init (GInitableIface *iface);
 static gboolean g_debug_controller_dbus_authorize_default (GDebugControllerDBus  *self,
                                                            GDBusMethodInvocation *invocation);
 
@@ -617,14 +615,12 @@ g_debug_controller_dbus_class_init (GDebugControllerDBusClass *klass)
 }
 
 static void
-g_debug_controller_dbus_iface_init (GDebugControllerInterface *iface,
-                                    gpointer                   iface_data)
+g_debug_controller_dbus_iface_init (GDebugControllerInterface *iface)
 {
 }
 
 static void
-g_debug_controller_dbus_initable_iface_init (GInitableIface *iface,
-                                             gpointer        iface_data)
+g_debug_controller_dbus_initable_iface_init (GInitableIface *iface)
 {
   iface->init = g_debug_controller_dbus_initable_init;
 }

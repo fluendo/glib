@@ -177,12 +177,9 @@ enum
 
 static guint signals[LAST_SIGNAL] = {0};
 
-static void dbus_interface_iface_init (GDBusInterfaceIface *dbus_interface_iface,
-                                       gpointer             iface_data);
-static void initable_iface_init       (GInitableIface *initable_iface,
-                                       gpointer        iface_data);
-static void async_initable_iface_init (GAsyncInitableIface *async_initable_iface,
-                                       gpointer             iface_data);
+static void dbus_interface_iface_init (GDBusInterfaceIface *dbus_interface_iface);
+static void initable_iface_init       (GInitableIface *initable_iface);
+static void async_initable_iface_init (GAsyncInitableIface *async_initable_iface);
 
 G_DEFINE_TYPE_WITH_CODE (GDBusProxy, g_dbus_proxy, G_TYPE_OBJECT,
                          G_ADD_PRIVATE (GDBusProxy)
@@ -1845,8 +1842,7 @@ async_initable_init_finish (GAsyncInitable  *initable,
 }
 
 static void
-async_initable_iface_init (GAsyncInitableIface *async_initable_iface,
-                           gpointer            iface_data)
+async_initable_iface_init (GAsyncInitableIface *async_initable_iface)
 {
   async_initable_iface->init_async = async_initable_init_async;
   async_initable_iface->init_finish = async_initable_init_finish;
@@ -1933,8 +1929,7 @@ initable_init (GInitable     *initable,
 }
 
 static void
-initable_iface_init (GInitableIface *initable_iface,
-                     gpointer        iface_data)
+initable_iface_init (GInitableIface *initable_iface)
 {
   initable_iface->init = initable_init;
 }
@@ -3189,8 +3184,7 @@ _g_dbus_proxy_set_object (GDBusInterface *interface,
 }
 
 static void
-dbus_interface_iface_init (GDBusInterfaceIface *dbus_interface_iface,
-                           gpointer             iface_data)
+dbus_interface_iface_init (GDBusInterfaceIface *dbus_interface_iface)
 {
   dbus_interface_iface->get_info   = _g_dbus_proxy_get_info;
   dbus_interface_iface->get_object = _g_dbus_proxy_get_object;

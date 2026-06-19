@@ -53,8 +53,7 @@ struct _GDummyTlsBackend {
   GTlsDatabase *database;
 };
 
-static void g_dummy_tls_backend_iface_init (GTlsBackendInterface *iface,
-                                            gpointer              iface_data);
+static void g_dummy_tls_backend_iface_init (GTlsBackendInterface *iface);
 
 #define g_dummy_tls_backend_get_type _g_dummy_tls_backend_get_type
 G_DEFINE_TYPE_WITH_CODE (GDummyTlsBackend, g_dummy_tls_backend, G_TYPE_OBJECT,
@@ -106,8 +105,7 @@ g_dummy_tls_backend_get_default_database (GTlsBackend *backend)
 }
 
 static void
-g_dummy_tls_backend_iface_init (GTlsBackendInterface *iface,
-                                gpointer              iface_data)
+g_dummy_tls_backend_iface_init (GTlsBackendInterface *iface)
 {
   iface->get_certificate_type = _g_dummy_tls_certificate_get_type;
   iface->get_client_connection_type = _g_dummy_tls_connection_get_type;
@@ -142,8 +140,7 @@ enum
   PROP_CERT_ISSUER
 };
 
-static void g_dummy_tls_certificate_initable_iface_init (GInitableIface *iface,
-                                                         gpointer        iface_data);
+static void g_dummy_tls_certificate_initable_iface_init (GInitableIface *iface);
 
 #define g_dummy_tls_certificate_get_type _g_dummy_tls_certificate_get_type
 G_DEFINE_TYPE_WITH_CODE (GDummyTlsCertificate, g_dummy_tls_certificate, G_TYPE_TLS_CERTIFICATE,
@@ -202,8 +199,7 @@ g_dummy_tls_certificate_initable_init (GInitable       *initable,
 }
 
 static void
-g_dummy_tls_certificate_initable_iface_init (GInitableIface  *iface,
-                                             gpointer         iface_data)
+g_dummy_tls_certificate_initable_iface_init (GInitableIface  *iface)
 {
   iface->init = g_dummy_tls_certificate_initable_init;
 }
@@ -246,8 +242,7 @@ enum
   PROP_CONN_NEGOTIATED_PROTOCOL,
 };
 
-static void g_dummy_tls_connection_initable_iface_init (GInitableIface *iface,
-                                                        gpointer        iface_data);
+static void g_dummy_tls_connection_initable_iface_init (GInitableIface *iface);
 
 #define g_dummy_tls_connection_get_type _g_dummy_tls_connection_get_type
 G_DEFINE_TYPE_WITH_CODE (GDummyTlsConnection, g_dummy_tls_connection, G_TYPE_TLS_CONNECTION,
@@ -330,8 +325,7 @@ g_dummy_tls_connection_initable_init (GInitable       *initable,
 }
 
 static void
-g_dummy_tls_connection_initable_iface_init (GInitableIface  *iface,
-                                            gpointer         iface_data)
+g_dummy_tls_connection_initable_iface_init (GInitableIface  *iface)
 {
   iface->init = g_dummy_tls_connection_initable_init;
 }
@@ -369,8 +363,7 @@ enum
   PROP_DTLS_CONN_AUTHENTICATION_MODE,
 };
 
-static void g_dummy_dtls_connection_initable_iface_init (GInitableIface *iface,
-                                                         gpointer        iface_data);
+static void g_dummy_dtls_connection_initable_iface_init (GInitableIface *iface);
 
 #define g_dummy_dtls_connection_get_type _g_dummy_dtls_connection_get_type
 G_DEFINE_TYPE_WITH_CODE (GDummyDtlsConnection, g_dummy_dtls_connection, G_TYPE_OBJECT,
@@ -434,8 +427,7 @@ g_dummy_dtls_connection_initable_init (GInitable       *initable,
 }
 
 static void
-g_dummy_dtls_connection_initable_iface_init (GInitableIface  *iface,
-                                             gpointer         iface_data)
+g_dummy_dtls_connection_initable_iface_init (GInitableIface  *iface)
 {
   iface->init = g_dummy_dtls_connection_initable_init;
 }
@@ -461,10 +453,8 @@ enum
   PROP_ANCHORS,
 };
 
-static void g_dummy_tls_database_file_database_iface_init (GTlsFileDatabaseInterface *iface,
-                                                           gpointer                   iface_data);
-static void g_dummy_tls_database_initable_iface_init (GInitableIface *iface,
-                                                      gpointer        iface_data);
+static void g_dummy_tls_database_file_database_iface_init (GTlsFileDatabaseInterface *iface);
+static void g_dummy_tls_database_initable_iface_init (GInitableIface *iface);
 
 #define g_dummy_tls_database_get_type _g_dummy_tls_database_get_type
 G_DEFINE_TYPE_WITH_CODE (GDummyTlsDatabase, g_dummy_tls_database, G_TYPE_TLS_DATABASE,
@@ -512,8 +502,7 @@ g_dummy_tls_database_init (GDummyTlsDatabase *database)
 }
 
 static void
-g_dummy_tls_database_file_database_iface_init (GTlsFileDatabaseInterface  *iface,
-                                               gpointer                    iface_data)
+g_dummy_tls_database_file_database_iface_init (GTlsFileDatabaseInterface  *iface)
 {
 }
 
@@ -528,8 +517,7 @@ g_dummy_tls_database_initable_init (GInitable       *initable,
 }
 
 static void
-g_dummy_tls_database_initable_iface_init (GInitableIface  *iface,
-                                          gpointer         iface_data)
+g_dummy_tls_database_initable_iface_init (GInitableIface  *iface)
 {
   iface->init = g_dummy_tls_database_initable_init;
 }

@@ -88,8 +88,7 @@ static void g_network_service_get_property (GObject      *object,
                                             GValue       *value,
                                             GParamSpec   *pspec);
 
-static void                      g_network_service_connectable_iface_init       (GSocketConnectableIface *iface,
-                                                                                 gpointer                 iface_data);
+static void                      g_network_service_connectable_iface_init       (GSocketConnectableIface *iface);
 static GSocketAddressEnumerator *g_network_service_connectable_enumerate        (GSocketConnectable      *connectable);
 static GSocketAddressEnumerator *g_network_service_connectable_proxy_enumerate  (GSocketConnectable      *connectable);
 static gchar                    *g_network_service_connectable_to_string        (GSocketConnectable      *connectable);
@@ -159,8 +158,7 @@ g_network_service_class_init (GNetworkServiceClass *klass)
 }
 
 static void
-g_network_service_connectable_iface_init (GSocketConnectableIface *connectable_iface,
-                                          gpointer                 iface_data)
+g_network_service_connectable_iface_init (GSocketConnectableIface *connectable_iface)
 {
   connectable_iface->enumerate = g_network_service_connectable_enumerate;
   connectable_iface->proxy_enumerate = g_network_service_connectable_proxy_enumerate;

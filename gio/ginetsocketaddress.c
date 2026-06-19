@@ -57,8 +57,7 @@ struct _GInetSocketAddressPrivate
   guint32       scope_id;
 };
 
-static void   g_inet_socket_address_connectable_iface_init (GSocketConnectableIface *iface,
-                                                            gpointer                 iface_data);
+static void   g_inet_socket_address_connectable_iface_init (GSocketConnectableIface *iface);
 static gchar *g_inet_socket_address_connectable_to_string  (GSocketConnectable      *connectable);
 
 G_DEFINE_TYPE_WITH_CODE (GInetSocketAddress, g_inet_socket_address, G_TYPE_SOCKET_ADDRESS,
@@ -312,8 +311,7 @@ g_inet_socket_address_class_init (GInetSocketAddressClass *klass)
 }
 
 static void
-g_inet_socket_address_connectable_iface_init (GSocketConnectableIface *iface,
-                                              gpointer                 iface_data)
+g_inet_socket_address_connectable_iface_init (GSocketConnectableIface *iface)
 {
   GSocketConnectableIface *parent_iface = g_type_interface_peek_parent (iface);
 
